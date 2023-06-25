@@ -41,13 +41,13 @@ fun Iniciar(navController: NavController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Iniciar sesión con tu DNI")
+        Text("Iniciar sesión con tu DNI")
         Spacer(modifier = Modifier.height(32.dp))
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp, 0.dp, 16.dp, 0.dp),
-            label = { Text(text = "DNI") },
+            label = { Text("DNI") },
             value = dni.value,
             onValueChange = {
                 dni.value = it
@@ -63,7 +63,7 @@ fun Iniciar(navController: NavController){
                 navController.navigate("Reportes")
             }
         ) {
-            Text(text = "Ingresar")
+            Text("Ingresar")
         }
     }
     //FIN de los elementos gráficos

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +32,7 @@ import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListarReportesPart(navController: NavController) {
+fun ListarReportes(navController: NavController) {
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
@@ -43,10 +44,11 @@ fun ListarReportesPart(navController: NavController) {
                         actionIconContentColor = Color.White
                     ),
                     actions = {
-                        IconButton(
-                            onClick = { /*TODO*/ }
-                        ) {
-                            Icon(Icons.Filled.Add,null)
+                        IconButton(onClick = { navController.navigate("Estatus") }) {
+                            Icon(Icons.Filled.Info,"Ver estadísticas de reportes")
+                        }
+                        IconButton(onClick = {navController.navigate("Agregar")}) {
+                            Icon(Icons.Filled.Add,"Agregar nuevo reporte")
                         }
                     }
                 )
@@ -60,7 +62,7 @@ fun ListarReportesPart(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(72.dp))
             Text("Aquí van los reportes por día.")
-            LazyColumn(){
+            LazyColumn{
 
             }
         }
@@ -71,6 +73,6 @@ fun ListarReportesPart(navController: NavController) {
 @Composable
 fun ListarReportesPartPreview(){
     ReportarVideojuegosTheme {
-        ListarReportesPart(navController = rememberNavController())
+        ListarReportes(navController = rememberNavController())
     }
 }

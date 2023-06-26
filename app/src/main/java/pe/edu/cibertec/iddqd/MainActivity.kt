@@ -12,7 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.ui.screens.Iniciar
-import pe.edu.cibertec.iddqd.ui.screens.ListarReportesPart
+import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
+import pe.edu.cibertec.iddqd.ui.screens.AgregarReporte
+import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
+import pe.edu.cibertec.iddqd.ui.screens.Prueba
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +40,16 @@ fun NavigationComponent(){
             Iniciar(navController)
         }
         composable("Reportes"){
-            ListarReportesPart(navController)
+            ListarReportes(navController)
+        }
+        composable("Agregar"){
+            AgregarReporte(navController)
+        }
+        composable("Estatus"){
+            ReportarGeneral(navController)
+        }
+        composable("Prueba"){
+            Prueba()
         }
     }
 }

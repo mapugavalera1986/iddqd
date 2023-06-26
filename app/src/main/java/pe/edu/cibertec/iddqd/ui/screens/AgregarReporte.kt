@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,7 +52,18 @@ fun AgregarReporte(navController: NavController){
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
                         actionIconContentColor = Color.White
-                    )
+                    ),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { navController.navigate("Reportes") }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Volver",
+                                tint = Color.White
+                            )
+                        }
+                    }
                 )
             }
         }

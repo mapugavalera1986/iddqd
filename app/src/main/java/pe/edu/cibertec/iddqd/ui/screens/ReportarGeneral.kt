@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -52,7 +53,18 @@ fun ReportarGeneral(navController: NavController){
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
                         actionIconContentColor = Color.White
-                    )
+                    ),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { navController.navigate("Reportes") }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Volver",
+                                tint = Color.White
+                            )
+                        }
+                    }
                 )
             }
         }
@@ -66,7 +78,9 @@ fun ReportarGeneral(navController: NavController){
             Text("Aquí van algunos reportes generales. "
                 + "No te olvides de cambiarlos cuando todo esté listo.")
             Spacer(modifier = Modifier.height(16.dp))
-            Card{
+            Card(
+                modifier = Modifier.width(400.dp).height(300.dp).padding(16.dp)
+            ){
                 Text("Tiempo total con videojuegos:")
                 Text("Motivo principal:")
                 Text("Juego que utilizas más:")

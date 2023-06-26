@@ -38,8 +38,8 @@ fun NavigationComponent(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "Home"){
         composable("Home"){
-            //Iniciar(navController)
-            AgregarReporte(navController)
+            Iniciar(navController)
+            //AgregarReporte(navController)
         }
         composable("Reportes"){
             //Prueba()

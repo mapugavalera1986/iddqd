@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -64,7 +65,6 @@ fun AgregarReporteC(navController: NavController){
     val horafinal = remember{
         mutableStateOf(TextFieldValue())
     }
-    var idmotivo = -1
     val context = LocalContext.current
     repoMotivo.listarMotivos { result ->
         if (result is Result.Success) {
@@ -99,30 +99,30 @@ fun AgregarReporteC(navController: NavController){
         }
     ) {
         Column (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
-            Text("Los detalles finales")
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp, 0.dp, 16.dp, 0.dp),
-                label = { Text("DNI") },
+                label = { Text("Hora en la que empezaste") },
                 value = horainicio.value,
                 onValueChange = {
                     horainicio.value = it
                 },
                 //leadingIcon = { Icon(Icons.Default.Lock, null) }
             )
-
+            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp, 0.dp, 16.dp, 0.dp),
-                label = { Text("DNI") },
+                label = { Text("Hora en la que terminaste") },
                 value = horainicio.value,
                 onValueChange = {
                     horainicio.value = it
                 },
                 //leadingIcon = { Icon(Icons.Default.Lock, null) }
             )
+            Spacer(modifier = Modifier.height(32.dp))
             Button(
                 modifier = Modifier
                     .width(160.dp)

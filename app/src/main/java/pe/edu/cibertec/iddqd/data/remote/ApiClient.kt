@@ -2,6 +2,7 @@ package pe.edu.cibertec.iddqd.data.remote
 
 import pe.edu.cibertec.iddqd.data.remote.service.MotivoService
 import pe.edu.cibertec.iddqd.data.remote.service.ParticipanteService
+import pe.edu.cibertec.iddqd.data.remote.service.TiempoService
 import pe.edu.cibertec.iddqd.data.remote.service.VideojuegoService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,5 +21,9 @@ object ApiClient {
     }
     fun getServicioMotivo(): MotivoService {
         return getRetrofit().create(MotivoService::class.java)
+    }
+
+    fun getServicioTiempo(): TiempoService {
+        return getRetrofit().create(TiempoService::class.java)
     }
 }

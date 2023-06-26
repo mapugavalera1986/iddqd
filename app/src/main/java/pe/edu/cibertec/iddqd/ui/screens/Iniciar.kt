@@ -1,7 +1,6 @@
 package pe.edu.cibertec.iddqd.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,23 +21,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result
+import pe.edu.cibertec.iddqd.util.Dummy
 
 @Composable
 fun Iniciar(navController: NavController){
+    val dummy = Dummy()
     val dni = remember{
         mutableStateOf(TextFieldValue())
     }
     val context = LocalContext.current
     val repoParticipante = ParticipanteRepository()
+    val participantes = remember{
+        mutableStateOf(listOf<Participante>()) }
     //INICIO de los elementos gráficos
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -67,7 +70,7 @@ fun Iniciar(navController: NavController){
                 repoParticipante.iniciarSSn(dni.value.text.trim()){result ->
                     if(result is Result.Success){
                         navController.navigate("Reportes")
-                        //Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
                     }else{
                         Toast.makeText(context,result.message.toString(), Toast.LENGTH_SHORT).show()
                     }

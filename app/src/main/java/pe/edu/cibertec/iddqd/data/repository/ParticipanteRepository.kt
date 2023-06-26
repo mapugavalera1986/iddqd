@@ -1,5 +1,6 @@
 package pe.edu.cibertec.iddqd.data.repository
 
+import android.provider.Telephony.Mms.Part
 import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.remote.ApiClient
 import pe.edu.cibertec.iddqd.data.remote.service.ParticipanteService
@@ -49,7 +50,6 @@ class ParticipanteRepository(
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
                 callback(Result.Error(t.message.toString()))
             }
-
         })
     }
 }

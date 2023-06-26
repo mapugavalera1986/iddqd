@@ -16,8 +16,8 @@ import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
 import pe.edu.cibertec.iddqd.ui.screens.AgregarReporte
 import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteB
 import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteC
+import pe.edu.cibertec.iddqd.ui.screens.PreviaReporte
 import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
-import pe.edu.cibertec.iddqd.ui.screens.Prueba
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,11 +38,10 @@ fun NavigationComponent(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "Home"){
         composable("Home"){
-            Iniciar(navController)
-            //AgregarReporte(navController)
+            ListarReportes(navController)
+            //Iniciar(navController)
         }
         composable("Reportes"){
-            //Prueba()
             ListarReportes(navController)
         }
         composable("Agregar"){
@@ -57,8 +56,8 @@ fun NavigationComponent(){
         composable("Estatus"){
             ReportarGeneral(navController)
         }
-        composable("Prueba"){
-            Prueba()
+        composable("Preview"){
+            PreviaReporte(navController)
         }
     }
 }
@@ -66,4 +65,5 @@ fun NavigationComponent(){
 @Composable
 fun HomeScreen(navController: NavController){
     Text(text = "Si puedes ver esto, créeme, no todo está perdido.")
+
 }

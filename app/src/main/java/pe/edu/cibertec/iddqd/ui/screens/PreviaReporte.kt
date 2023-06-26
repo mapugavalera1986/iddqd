@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,45 +32,50 @@ import pe.edu.cibertec.iddqd.util.Dummy
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListarReportes(navController: NavController) {
+fun PreviaReporte(navController: NavController){
     val dummy = Dummy()
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
                 TopAppBar(
-                    title = { Text("¡Hola!") },
+                    title = { Text("Datos que reportaste") },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
                         actionIconContentColor = Color.White
                     ),
-                    actions = {
-                        IconButton(onClick = { navController.navigate("Estatus") }) {
-                            Icon(Icons.Filled.Info,"Ver estadísticas de reportes")
-                        }
-                        IconButton(onClick = {navController.navigate("Agregar")}) {
-                            Icon(Icons.Filled.Add,"Agregar nuevo reporte")
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { navController.navigate("Reportes") }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Volver",
+                                tint = Color.White
+                            )
                         }
                     }
                 )
             }
         }
-    ) {
+    ){
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp, 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(72.dp))
-            Text("Aquí van los reportes por día.")
+            Text("ID Participante = " +dummy.idprtc)
+            Text("ID Videojuego = " + dummy.idVideojuego)
+            Text("ID Motivo = " + dummy.idMotivo)
+            Text("ID Tiempo = " + dummy.idTiempo)
+            Text("Fecha ingreso = " + dummy.fechaDay)
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
-fun ListarReportesPartPreview(){
+fun PreviaReportePreview(){
     ReportarVideojuegosTheme {
-        ListarReportes(navController = rememberNavController())
+        AgregarReporte(navController = rememberNavController())
     }
 }

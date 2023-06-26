@@ -19,12 +19,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -35,23 +32,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import coil.request.ImageRequest
-import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.coil.CoilImage
 import pe.edu.cibertec.iddqd.data.model.Motivo
 import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
-import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
+import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgregarReporteB(navController: NavController){
+    val dummy = Dummy()
     val motivos = remember { mutableStateOf(listOf<Motivo>()) }
     val repoMotivo = MotivoRepository()
     var idmotivo = -1
@@ -97,7 +89,7 @@ fun AgregarReporteB(navController: NavController){
                         .fillMaxWidth()
                         .height(64.dp),
                     onClick ={
-                        Toast.makeText(context,"Mira esto", Toast.LENGTH_SHORT).show()
+                        dummy.idMotivo = motivo.id
                         navController.navigate("Agregar_C")
                     }
                 ){

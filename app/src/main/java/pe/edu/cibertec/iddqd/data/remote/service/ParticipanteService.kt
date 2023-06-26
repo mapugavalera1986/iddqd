@@ -9,8 +9,7 @@ import retrofit2.http.Query
 
 interface ParticipanteService {
     @GET("participantes")
-    fun validarParticipante(@Query("dni") dni : String) : Call<List<Participante>>
-
+    fun revisar(@Query("dni") dni : String) : Call<List<Participante>>
     @GET("participantes")
-    fun iniciarSsn(@Query("dni") dni : String) : Call<List<Participante>>
+    fun iniciarSSn(@Query("dni") dni : String) : Call<List<Participante>>
 }

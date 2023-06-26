@@ -9,15 +9,19 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ParticipanteRepository(
-    private val servicioParticipante : ParticipanteService = ApiClient.getServicioParticipante()
+    private val serviceParticipante: ParticipanteService = ApiClient.getServicioParticipante()
 ) {
-    private fun validarParticipante(dni : String, callback: (Result<Boolean>) -> Unit) {
-        servicioParticipante.validarParticipante(dni).enqueue(object : Callback<List<Participante>> {
+    fun revisar(dni: String, callback: (Result<Boolean>) -> Unit) {
+        serviceParticipante.revisar(dni).enqueue(object : Callback<List<Participante>> {
             override fun onResponse(call: Call<List<Participante>>, response: Response<List<Participante>>) {
                 if (response.isSuccessful && response.body() != null) {
-                    callback(Result.Success(true))
+                    if (response.body()!!.isEmpty()) {
+                        callback(Result.Success(true))
+                    } else {
+                        callback(Result.Error("Ya existe", false))
+                    }
                 } else {
-                    callback(Result.Error("El DNI no está registrado"))
+                    callback(Result.Error("No data found"))
                 }
             }
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
@@ -25,19 +29,27 @@ class ParticipanteRepository(
             }
         })
     }
-    fun iniciarSsn(dni: String, callback: (Result<Boolean>) -> Unit) {
-        servicioParticipante.iniciarSsn(dni).enqueue(object : Callback<List<Participante>> {
+    fun iniciarSSn(dni: String, callback: (Result<Boolean>) -> Unit) {
+        serviceParticipante.iniciarSSn(dni).enqueue(object : Callback<List<Participante>> {
             override fun onResponse(call: Call<List<Participante>>, response: Response<List<Participante>>) {
-
                 if (response.isSuccessful && response.body() != null) {
-                    callback(Result.Success(true))
+                    if (response.body()!!.isNotEmpty()) {
+                        callback(Result.Success(true))
+                    } else {
+                        revisar(dni) { result ->
+                            if (result is Result.Error && result.data != null && !result.data) {
+                                callback(Result.Error("DNI incorrecto"))
+                            }
+                        }
+                    }
                 } else {
-                    callback(Result.Error("No se encontró ese DNI"))
+                    callback(Result.Error("No existe"))
                 }
             }
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
                 callback(Result.Error(t.message.toString()))
             }
+
         })
     }
 }

@@ -1,5 +1,6 @@
 package pe.edu.cibertec.iddqd.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
+import pe.edu.cibertec.iddqd.util.Result
 
 @Composable
 fun Iniciar(navController: NavController){
@@ -62,7 +64,15 @@ fun Iniciar(navController: NavController){
                 .width(160.dp)
                 .padding(16.dp, 0.dp, 16.dp, 0.dp),
             onClick = {
-                navController.navigate("Reportes")
+                repoParticipante.iniciarSSn(dni.value.text.trim()){result ->
+                    if(result is Result.Success){
+                        navController.navigate("Reportes")
+                        //Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(context,result.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                //navController.navigate("Reportes")
             }
         ) {
             Text("Ingresar")

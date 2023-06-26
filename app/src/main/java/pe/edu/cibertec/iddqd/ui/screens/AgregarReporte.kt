@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -128,10 +129,15 @@ fun AgregarReporte(navController: NavController){
             Spacer(modifier = Modifier.height(48.dp))
             Row(
                 horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
             ) {
-                Button( onClick = { /*TODO*/ }){
-                    Text("Volver")
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(Color.Gray)
+                ){
+                    Text("Limpiar")
                 }
                 Spacer(modifier= Modifier.width(8.dp))
                 Button( onClick = { /*TODO*/ }) {

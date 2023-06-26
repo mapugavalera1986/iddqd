@@ -70,7 +70,6 @@ fun Iniciar(navController: NavController){
     }
     //FIN de los elementos gráficos
 }
-
 @Preview(showBackground = true)
 @Composable
 fun IniciarPreview(){

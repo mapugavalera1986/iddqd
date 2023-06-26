@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -43,22 +47,28 @@ import androidx.navigation.compose.rememberNavController
 import coil.request.ImageRequest
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
-import pe.edu.cibertec.iddqd.data.model.Videojuego
-import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
+import pe.edu.cibertec.iddqd.data.model.Motivo
+import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgregarReporte(navController: NavController) {
-    val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
-    val repoVideojuego = VideojuegoRepository()
-    var idvideojuego = -1
+fun AgregarReporteC(navController: NavController){
+    val motivos = remember { mutableStateOf(listOf<Motivo>()) }
+    val repoMotivo = MotivoRepository()
+    val horainicio = remember{
+        mutableStateOf(TextFieldValue())
+    }
+    val horafinal = remember{
+        mutableStateOf(TextFieldValue())
+    }
+    var idmotivo = -1
     val context = LocalContext.current
-    repoVideojuego.listarVideojuegos { result ->
+    repoMotivo.listarMotivos { result ->
         if (result is Result.Success) {
-            videojuegos.value = result.data!!
+            motivos.value = result.data!!
         } else {
             Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -67,7 +77,7 @@ fun AgregarReporte(navController: NavController) {
         topBar = {
             Surface(shadowElevation = 8.dp) {
                 TopAppBar(
-                    title = { Text("¿Cuál jugaste esta vez?") },
+                    title = { Text("¿Cuánto tiempo jugaste?") },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
@@ -75,7 +85,7 @@ fun AgregarReporte(navController: NavController) {
                     ),
                     navigationIcon = {
                         IconButton(
-                            onClick = { navController.navigate("Reportes") }
+                            onClick = { navController.navigate("Agregar_B") }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -88,30 +98,41 @@ fun AgregarReporte(navController: NavController) {
             }
         }
     ) {
-        //Spacer(Modifier.padding(80.dp,80.dp,80.dp,80.dp))
-        LazyColumn (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
-            items(videojuegos.value) { videojuego ->
-                Card(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                        .height(64.dp),
-                    onClick ={
-                        Toast.makeText(context,"Mira esto", Toast.LENGTH_SHORT).show()
-                        navController.navigate("Agregar_B")
-                    }
-                ){
-                    Text(videojuego.nmbr)
+        Column (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
+            Text("Los detalles finales")
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                label = { Text("DNI") },
+                value = horainicio.value,
+                onValueChange = {
+                    horainicio.value = it
+                },
+                //leadingIcon = { Icon(Icons.Default.Lock, null) }
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                label = { Text("DNI") },
+                value = horainicio.value,
+                onValueChange = {
+                    horainicio.value = it
+                },
+                //leadingIcon = { Icon(Icons.Default.Lock, null) }
+            )
+            Button(
+                modifier = Modifier
+                    .width(160.dp)
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                onClick = {
+                    Toast.makeText(context,"Si llegate aquí, ya tienes reporte", Toast.LENGTH_SHORT).show()
                 }
+            ) {
+                Text("Agregar")
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AgregarReportePreview(){
-    ReportarVideojuegosTheme {
-        AgregarReporte(navController = rememberNavController())
     }
 }

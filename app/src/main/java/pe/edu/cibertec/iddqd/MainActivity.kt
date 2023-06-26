@@ -14,6 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.ui.screens.Iniciar
 import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
 import pe.edu.cibertec.iddqd.ui.screens.AgregarReporte
+import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteB
+import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteC
 import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
 import pe.edu.cibertec.iddqd.ui.screens.Prueba
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
@@ -31,19 +33,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun NavigationComponent(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "Home"){
         composable("Home"){
-            Iniciar(navController)
+            //Iniciar(navController)
+            AgregarReporte(navController)
         }
         composable("Reportes"){
+            //Prueba()
             ListarReportes(navController)
         }
         composable("Agregar"){
             AgregarReporte(navController)
+        }
+        composable("Agregar_B"){
+            AgregarReporteB(navController)
+        }
+        composable("Agregar_C"){
+            AgregarReporteC(navController)
         }
         composable("Estatus"){
             ReportarGeneral(navController)

@@ -43,22 +43,22 @@ import androidx.navigation.compose.rememberNavController
 import coil.request.ImageRequest
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
-import pe.edu.cibertec.iddqd.data.model.Videojuego
-import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
+import pe.edu.cibertec.iddqd.data.model.Motivo
+import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgregarReporte(navController: NavController) {
-    val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
-    val repoVideojuego = VideojuegoRepository()
-    var idvideojuego = -1
+fun AgregarReporteB(navController: NavController){
+    val motivos = remember { mutableStateOf(listOf<Motivo>()) }
+    val repoMotivo = MotivoRepository()
+    var idmotivo = -1
     val context = LocalContext.current
-    repoVideojuego.listarVideojuegos { result ->
+    repoMotivo.listarMotivos { result ->
         if (result is Result.Success) {
-            videojuegos.value = result.data!!
+            motivos.value = result.data!!
         } else {
             Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -67,7 +67,7 @@ fun AgregarReporte(navController: NavController) {
         topBar = {
             Surface(shadowElevation = 8.dp) {
                 TopAppBar(
-                    title = { Text("¿Cuál jugaste esta vez?") },
+                    title = { Text("¿Cuál fue tu motivo?") },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
@@ -75,7 +75,7 @@ fun AgregarReporte(navController: NavController) {
                     ),
                     navigationIcon = {
                         IconButton(
-                            onClick = { navController.navigate("Reportes") }
+                            onClick = { navController.navigate("Agregar_A") }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -90,7 +90,7 @@ fun AgregarReporte(navController: NavController) {
     ) {
         //Spacer(Modifier.padding(80.dp,80.dp,80.dp,80.dp))
         LazyColumn (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
-            items(videojuegos.value) { videojuego ->
+            items(motivos.value) { motivo ->
                 Card(
                     modifier = Modifier
                         .padding(8.dp)
@@ -98,20 +98,12 @@ fun AgregarReporte(navController: NavController) {
                         .height(64.dp),
                     onClick ={
                         Toast.makeText(context,"Mira esto", Toast.LENGTH_SHORT).show()
-                        navController.navigate("Agregar_B")
+                        navController.navigate("Agregar_C")
                     }
                 ){
-                    Text(videojuego.nmbr)
+                    Text(motivo.dscrpcn)
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AgregarReportePreview(){
-    ReportarVideojuegosTheme {
-        AgregarReporte(navController = rememberNavController())
     }
 }

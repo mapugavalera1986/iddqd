@@ -62,9 +62,6 @@ fun ListarReportes(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(72.dp))
             Text("Aquí van los reportes por día.")
-            LazyColumn{
-
-            }
         }
     }
 }

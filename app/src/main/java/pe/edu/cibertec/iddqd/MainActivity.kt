@@ -20,6 +20,7 @@ import pe.edu.cibertec.iddqd.ui.screens.PreviaReporte
 import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
+
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,37 +34,38 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
-fun NavigationComponent(){
+fun NavigationComponent() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "Home"){
-        composable("Home"){
-            ListarReportes(navController)
-            //Iniciar(navController)
+    NavHost(navController = navController, startDestination = "Iniciar") {
+        composable("Iniciar") {
+            Iniciar(navController)
         }
-        composable("Reportes"){
+        composable("Reportes") {
             ListarReportes(navController)
         }
-        composable("Agregar"){
+        composable("Agregar") {
             AgregarReporte(navController)
         }
-        composable("Agregar_B"){
+        composable("Agregar_B") {
             AgregarReporteB(navController)
         }
-        composable("Agregar_C"){
+        composable("Agregar_C") {
             AgregarReporteC(navController)
         }
-        composable("Estatus"){
+        composable("Estatus") {
             ReportarGeneral(navController)
         }
-        composable("Preview"){
+        composable("Preview") {
             PreviaReporte(navController)
         }
     }
 }
 
-@Composable
-fun HomeScreen(navController: NavController){
-    Text(text = "Si puedes ver esto, créeme, no todo está perdido.")
 
+
+@Composable
+fun HomeScreen(navController: NavController) {
+    Text(text = "Si puedes ver esto, créeme, no todo está perdido.")
 }

@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class ParticipanteRepository(
     private val serviceParticipante: ParticipanteService = ApiClient.getServicioParticipante()
 ) {
@@ -37,19 +38,20 @@ class ParticipanteRepository(
                     if (response.body()!!.isNotEmpty()) {
                         callback(Result.Success(true))
                     } else {
-                        revisar(dni) { result ->
-                            if (result is Result.Error && result.data != null && !result.data) {
-                                callback(Result.Error("DNI incorrecto"))
-                            }
-                        }
+                        callback(Result.Error("DNI incorrecto"))
                     }
                 } else {
                     callback(Result.Error("No existe"))
                 }
             }
+
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
                 callback(Result.Error(t.message.toString()))
             }
         })
     }
+
+
+
+
 }

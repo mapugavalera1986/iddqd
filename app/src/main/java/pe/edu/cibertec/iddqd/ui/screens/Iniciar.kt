@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,17 +33,14 @@ import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result
 import pe.edu.cibertec.iddqd.util.Dummy
 
+
 @Composable
-fun Iniciar(navController: NavController){
-    val dummy = Dummy()
-    val dni = remember{
-        mutableStateOf(TextFieldValue())
-    }
+fun Iniciar(navController: NavController) {
+    val dni = remember { mutableStateOf("") }
+    val nmbrs  = remember { mutableStateOf("") }
     val context = LocalContext.current
     val repoParticipante = ParticipanteRepository()
-    val participantes = remember{
-        mutableStateOf(listOf<Participante>()) }
-    //INICIO de los elementos gráficos
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -67,25 +65,34 @@ fun Iniciar(navController: NavController){
                 .width(160.dp)
                 .padding(16.dp, 0.dp, 16.dp, 0.dp),
             onClick = {
-                repoParticipante.iniciarSSn(dni.value.text.trim()){result ->
-                    if(result is Result.Success){
-                        navController.navigate("Reportes")
-                        Toast.makeText(context, "Funciona", Toast.LENGTH_LONG).show()
-                    }else{
-                        Toast.makeText(context,result.message.toString(), Toast.LENGTH_SHORT).show()
+                if (dni.value.isNotEmpty()) {
+                    repoParticipante.iniciarSSn(dni.value.trim()) { result ->
+                        when (result) {
+                            is Result.Success -> {
+                                if (result.data == true) {
+                                    navController.navigate("Reportes")
+                                } else {
+                                    Toast.makeText(context, "DNI incorrecto", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            is Result.Error -> {
+                                Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
+                } else {
+                    Toast.makeText(context, "Ingrese un DNI", Toast.LENGTH_SHORT).show()
                 }
-                //navController.navigate("Reportes")
             }
         ) {
             Text("Ingresar")
         }
     }
-    //FIN de los elementos gráficos
 }
+
 @Preview(showBackground = true)
 @Composable
-fun IniciarPreview(){
+fun IniciarPreview() {
     ReportarVideojuegosTheme {
         Iniciar(navController = rememberNavController())
     }

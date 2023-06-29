@@ -1,7 +1,6 @@
 package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,23 +28,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.data.model.Motivo
+import pe.edu.cibertec.iddqd.data.model.Reporte
 import pe.edu.cibertec.iddqd.data.model.Tiempo
 import pe.edu.cibertec.iddqd.data.model.Videojuego
 import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
 import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
 import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
 import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
-import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
-import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.util.Result
-import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Date
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -130,10 +123,10 @@ fun PreviaReporte(
                 .padding(16.dp, 16.dp)
         ) {
             Spacer(modifier = Modifier.height(72.dp))
-            Text("Videojuego = " + elVidejuego.value.nmbr)
-            Text("Motivo = " + elMotivo.value.dscrpcn)
-            Text("Tiempo = " + elTiempo.value.dscrpcn)
-            Text("Fecha = " + estaFecha)
+            Text("Videojuego: ${elVidejuego.value.nmbr}")
+            Text("Motivo: ${elMotivo.value.dscrpcn}")
+            Text("Tiempo: ${elTiempo.value.dscrpcn}")
+            Text("Fecha: $estaFecha")
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -160,9 +153,11 @@ fun PreviaReporte(
                     ) { result ->
                         if (result is Result.Success) {
                             Toast.makeText(context, "Reporte guardado correctamente", Toast.LENGTH_SHORT).show()
+
                         } else {
                             Toast.makeText(context, "Error al guardar el reporte", Toast.LENGTH_SHORT).show()
                         }
+                        navController.navigate("Reportes/${dni}/")
                     }
                 }) {
                     Text(

@@ -79,8 +79,11 @@ fun NavigationComponent() {
             )
         }
 
-        composable("Estatus/{p_id}/") {
-            ReportarGeneral(navController)
+        composable("Estatus/{dni}/{pid}/") {
+            ReportarGeneral(navController,
+                it.arguments?.getString("dni"),
+                it.arguments?.getString("pid")
+            )
         }
     }
 }

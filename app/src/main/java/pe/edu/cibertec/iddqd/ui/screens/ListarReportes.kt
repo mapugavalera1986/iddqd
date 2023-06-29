@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,8 +41,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.data.model.Participante
+import pe.edu.cibertec.iddqd.data.model.Reporte
 import pe.edu.cibertec.iddqd.data.model.Tiempo
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
+import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
 import pe.edu.cibertec.iddqd.util.Result
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
@@ -85,7 +90,7 @@ fun ListarReportes(navController: NavController, dni: String?) {
                         actionIconContentColor = Color.White
                     ),
                     actions = {
-                        IconButton(onClick = { navController.navigate("Estatus/$pid/") }) {
+                        IconButton(onClick = { navController.navigate("Estatus/$dni/$pid/") }) {
                             Icon(Icons.Filled.Info, "Ver estadísticas de reportes")
                         }
                         IconButton(onClick = { navController.navigate("ElegirJuego/$dni/$pid/") }) {

@@ -59,7 +59,6 @@ fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                Toast.makeText(context, "DNI: $dni, N: $pid", Toast.LENGTH_SHORT).show()
                                 navController.navigate("Reportes/$dni/") }
                         ) {
                             Icon(

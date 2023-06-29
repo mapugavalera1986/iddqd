@@ -47,25 +47,38 @@ import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListarReportes(navController: NavController, dni: String?) {
-    val par = remember { mutableStateOf(Participante(0,"","","",0))}
+    val par = remember { mutableStateOf(Participante(0, "", "", "", 0)) }
+    val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
     val context = LocalContext.current
     val repoParticipantes = ParticipanteRepository()
+    val repoReportes = ReporteRepository()
+
     if (dni != null) {
-        repoParticipantes.obtenerParticipantePorDni(dni){ result->
-            if(result is Result.Success){
+        repoParticipantes.obtenerParticipantePorDni(dni) { result ->
+            if (result is Result.Success) {
                 par.value = result.data?.get(0)!!
+                val participanteId = par.value.id
+                repoReportes.listarReportesPorParticipante(participanteId) { reportesResult ->
+                    if (reportesResult is Result.Success) {
+                        reportes.value = reportesResult.data ?: emptyList()
+                    } else {
+                        Toast.makeText(context, reportesResult.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
             } else {
                 Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
+
     val pid = par.value.id.toString()
     val pnmbr = par.value.nmbrs
+
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
                 TopAppBar(
-                    title = { Text("¡Hola, ${pnmbr}!") },
+                    title = { Text("¡Hola, $pnmbr!") },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
@@ -73,10 +86,10 @@ fun ListarReportes(navController: NavController, dni: String?) {
                     ),
                     actions = {
                         IconButton(onClick = { navController.navigate("Estatus/$pid/") }) {
-                            Icon(Icons.Filled.Info,"Ver estadísticas de reportes")
+                            Icon(Icons.Filled.Info, "Ver estadísticas de reportes")
                         }
-                        IconButton(onClick = {navController.navigate("ElegirJuego/$dni/$pid/")}) {
-                            Icon(Icons.Filled.Add,"Agregar nuevo reporte")
+                        IconButton(onClick = { navController.navigate("ElegirJuego/$dni/$pid/") }) {
+                            Icon(Icons.Filled.Add, "Agregar nuevo reporte")
                         }
                     }
                 )
@@ -84,14 +97,34 @@ fun ListarReportes(navController: NavController, dni: String?) {
         }
     ) {
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp, 16.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
         ) {
             Spacer(modifier = Modifier.height(72.dp))
-            Text("Aquí van los reportes por día.")
-            Button(onClick = { Toast.makeText(context, "Mira: $pid", Toast.LENGTH_SHORT).show() }) {
-                Text("Cosas")
+            if (reportes.value.isNotEmpty()) {
+                Column {
+                    reportes.value.forEach { reporte ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text("ID: ${reporte.id}")
+                                Text("ID Participante: ${reporte.id_participante}")
+                                Text("ID Videojuego: ${reporte.id_videojuego}")
+                                Text("ID Motivo: ${reporte.id_motivo}")
+                                Text("Fecha: ${reporte.fecha}")
+                            }
+                        }
+                    }
+                }
+            } else {
+                Text("No se encontraron reportes")
             }
         }
     }

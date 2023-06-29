@@ -1,7 +1,11 @@
 package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
+import android.widget.Space
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,7 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,20 +25,78 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.iddqd.data.model.Motivo
+import pe.edu.cibertec.iddqd.data.model.Tiempo
+import pe.edu.cibertec.iddqd.data.model.Videojuego
+import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
+import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
+import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
+import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Dummy
+import pe.edu.cibertec.iddqd.util.Result
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PreviaReporte(navController: NavController){
-    val dummy = Dummy()
+fun PreviaReporte(
+    navController: NavController,
+    dni: String?,
+    pid: String?,
+    vid: String?,
+    mid: String?,
+    tid: String?
+){
+    val context = LocalContext.current
+    val elVidejuego = remember { mutableStateOf(Videojuego(0,"",0))}
+    val elMotivo = remember { mutableStateOf(Motivo(0,""))}
+    val elTiempo = remember { mutableStateOf(Tiempo(0,"",0))}
+    val repoVideojuego = VideojuegoRepository()
+    val repoMotivo = MotivoRepository()
+    val repoTiempo = TiempoRepository()
+    val repoReporte = ReporteRepository()
+    if (vid != null) {
+        repoVideojuego.obtenerVideojuegoPorId(vid.toInt()) { result ->
+            if (result is Result.Success) {
+                elVidejuego.value = result.data!![0]
+            } else {
+                Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    if (mid != null) {
+        repoMotivo.obtenerMotivoPorId(mid.toInt()) { result ->
+            if (result is Result.Success) {
+                elMotivo.value = result.data!![0]
+            } else {
+                Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    if (tid != null) {
+        repoTiempo.obtenerTiempoPorId(tid.toInt()) { result ->
+            if (result is Result.Success) {
+                elTiempo.value = result.data!![0]
+            } else {
+                Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    val estaFecha = SimpleDateFormat("dd/MM/yyyy").format(Date())
+
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
@@ -46,11 +109,11 @@ fun PreviaReporte(navController: NavController){
                     ),
                     navigationIcon = {
                         IconButton(
-                            onClick = { navController.navigate("Reportes") }
+                            onClick = { navController.navigate("Reportes/$dni/") }
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Volver",
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Empezar de nuevo",
                                 tint = Color.White
                             )
                         }
@@ -64,18 +127,34 @@ fun PreviaReporte(navController: NavController){
                 .fillMaxWidth()
                 .padding(16.dp, 16.dp)
         ) {
-            Text("ID Participante = " +dummy.idprtc)
-            Text("ID Videojuego = " + dummy.idVideojuego)
-            Text("ID Motivo = " + dummy.idMotivo)
-            Text("ID Tiempo = " + dummy.idTiempo)
-            Text("Fecha ingreso = " + dummy.fechaDay)
+            Spacer(modifier = Modifier.height(72.dp))
+            Text("Videojuego = " + elVidejuego.value.nmbr)
+            Text("Motivo = " + elMotivo.value.dscrpcn)
+            Text("Tiempo = " + elTiempo.value.dscrpcn)
+            Text("Fecha = " + estaFecha)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Button( onClick = { /*TODO*/ }){
+                    Text(
+                        text = "Empezar de nuevo",
+                    )
+                    Modifier.width(32.dp)
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Button( onClick = {
+                    Toast.makeText(context, "DNI: $dni, N: $pid, Videojuego: $vid, Mo: $mid y Fecha: $estaFecha", Toast.LENGTH_SHORT).show()
+                }){
+                    Text(
+                        text = "Registrar partida",
+                    )
+                    Modifier.width(32.dp)
+                }
+            }
         }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun PreviaReportePreview(){
-    ReportarVideojuegosTheme {
-        AgregarReporte(navController = rememberNavController())
     }
 }

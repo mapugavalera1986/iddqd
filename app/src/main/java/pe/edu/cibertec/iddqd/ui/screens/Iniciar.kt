@@ -16,31 +16,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.iddqd.data.model.Participante
+import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result
-import pe.edu.cibertec.iddqd.util.Dummy
 
 
 @Composable
 fun Iniciar(navController: NavController) {
     val dni = remember { mutableStateOf("") }
-    val nmbrs  = remember { mutableStateOf("") }
     val context = LocalContext.current
     val repoParticipante = ParticipanteRepository()
-
+    val cosas = remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -70,9 +66,10 @@ fun Iniciar(navController: NavController) {
                         when (result) {
                             is Result.Success -> {
                                 if (result.data == true) {
-                                    navController.navigate("Reportes")
+                                    navController.navigate("Reportes/${dni.value.trim()}/")
                                 } else {
                                     Toast.makeText(context, "DNI incorrecto", Toast.LENGTH_SHORT).show()
+                                    navController.navigate("Iniciar")
                                 }
                             }
                             is Result.Error -> {
@@ -87,13 +84,5 @@ fun Iniciar(navController: NavController) {
         ) {
             Text("Ingresar")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun IniciarPreview() {
-    ReportarVideojuegosTheme {
-        Iniciar(navController = rememberNavController())
     }
 }

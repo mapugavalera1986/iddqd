@@ -13,5 +13,5 @@ interface ParticipanteService {
     @GET("participantes")
     fun iniciarSSn(@Query("dni") dni : String) : Call<List<Participante>>
     @GET("participantes")
-    fun obtenerParticipantePorDni(@Query("dni") dni : String) : Call<Participante>
+    fun obtenerParticipantePorDni(@Query("dni") dni : String) : Call<List<Participante>>
 }

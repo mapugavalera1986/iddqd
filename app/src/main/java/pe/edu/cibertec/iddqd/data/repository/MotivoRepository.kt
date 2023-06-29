@@ -27,4 +27,18 @@ class MotivoRepository (
             }
         })
     }
+    fun obtenerMotivoPorId(id: Int, callback: (Result<List<Motivo>>) -> Unit){
+        serviceMotivo.obtenerMotivoPorId(id).enqueue(object : Callback<List<Motivo>>{
+            override fun onResponse(call: Call<List<Motivo>>, response: Response<List<Motivo>>){
+                if (response.isSuccessful && response.body() != null){
+                    callback(Result.Success(response.body()!!))
+                } else{
+                    callback(Result.Error("No se encontró información"))
+                }
+            }
+            override fun onFailure(call: Call<List<Motivo>>, t: Throwable) {
+                callback(Result.Error(t.message.toString()))
+            }
+        })
+    }
 }

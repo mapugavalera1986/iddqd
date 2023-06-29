@@ -25,24 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.data.model.Videojuego
 import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
-import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
-import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgregarReporte(navController: NavController) {
-    val dummy = Dummy()
+fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
     val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
     val repoVideojuego = VideojuegoRepository()
-    var idvideojuego = -1
+    val spcl = dni
     val context = LocalContext.current
     repoVideojuego.listarVideojuegos { result ->
         if (result is Result.Success) {
@@ -63,7 +58,9 @@ fun AgregarReporte(navController: NavController) {
                     ),
                     navigationIcon = {
                         IconButton(
-                            onClick = { navController.navigate("Reportes") }
+                            onClick = {
+                                Toast.makeText(context, "DNI: $dni, N: $pid", Toast.LENGTH_SHORT).show()
+                                navController.navigate("Reportes/$dni/") }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -83,23 +80,17 @@ fun AgregarReporte(navController: NavController) {
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
+                        .fillMaxWidth()
                         .height(64.dp),
                     onClick ={
-                        dummy.idVideojuego = videojuego.id
-                        navController.navigate("Agregar_B")
+                        var juego = videojuego.id.toString()
+                        //Toast.makeText(context, "DNI: $dni, N: $pid y Videojuego: $juego", Toast.LENGTH_SHORT).show()
+                        navController.navigate("ElegirMotivo/$dni/$pid/$juego/")
                     }
                 ){
                     Text(videojuego.nmbr)
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AgregarReportePreview(){
-    ReportarVideojuegosTheme {
-        AgregarReporte(navController = rememberNavController())
     }
 }

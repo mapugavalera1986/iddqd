@@ -13,9 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.ui.screens.Iniciar
 import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
-import pe.edu.cibertec.iddqd.ui.screens.AgregarReporte
-import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteB
-import pe.edu.cibertec.iddqd.ui.screens.AgregarReporteC
+import pe.edu.cibertec.iddqd.ui.screens.AgregarJuego
+import pe.edu.cibertec.iddqd.ui.screens.AgregarMotivo
+import pe.edu.cibertec.iddqd.ui.screens.AgregarTiempo
 import pe.edu.cibertec.iddqd.ui.screens.PreviaReporte
 import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
@@ -42,23 +42,45 @@ fun NavigationComponent() {
         composable("Iniciar") {
             Iniciar(navController)
         }
-        composable("Reportes") {
-            ListarReportes(navController)
+        composable("Reportes/{dni}/",
+
+        ) {
+            ListarReportes(navController, it.arguments?.getString("dni"))
         }
-        composable("Agregar") {
-            AgregarReporte(navController)
+        composable("ElegirJuego/{dni}/{pid}/") {
+            AgregarJuego(navController,
+                it.arguments?.getString("dni"),
+                it.arguments?.getString("pid")
+            )
         }
-        composable("Agregar_B") {
-            AgregarReporteB(navController)
+        composable("ElegirMotivo/{dni}/{pid}/{vid}/") {
+            AgregarMotivo(
+                navController,
+                it.arguments?.getString("dni"),
+                it.arguments?.getString("pid"),
+                it.arguments?.getString("vid")
+            )
         }
-        composable("Agregar_C") {
-            AgregarReporteC(navController)
+        composable("ElegirTiempo/{dni}/{pid}/{vid}/{mid}/") {
+            AgregarTiempo(navController,
+                it.arguments?.getString("dni"),
+                it.arguments?.getString("pid"),
+                it.arguments?.getString("vid"),
+                it.arguments?.getString("mid")
+            )
         }
-        composable("Estatus") {
+        composable("Previsualizar/{dni}/{pid}/{vid}/{mid}/{tid}/"){
+            PreviaReporte(navController,
+                it.arguments?.getString("dni"),
+                it.arguments?.getString("pid"),
+                it.arguments?.getString("vid"),
+                it.arguments?.getString("mid"),
+                it.arguments?.getString("tid")
+            )
+        }
+
+        composable("Estatus/{p_id}/") {
             ReportarGeneral(navController)
-        }
-        composable("Preview") {
-            PreviaReporte(navController)
         }
     }
 }

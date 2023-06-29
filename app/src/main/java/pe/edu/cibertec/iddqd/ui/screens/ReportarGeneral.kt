@@ -33,7 +33,6 @@ import pe.edu.cibertec.iddqd.util.Dummy
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportarGeneral(navController: NavController){
-    val dummy = Dummy()
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
@@ -76,12 +75,5 @@ fun ReportarGeneral(navController: NavController){
                 Text("Juego que utilizas más:")
             }
         }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun ReportarGeneralPreview(){
-    ReportarVideojuegosTheme {
-        AgregarReporte(navController = rememberNavController())
     }
 }

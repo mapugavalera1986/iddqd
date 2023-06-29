@@ -23,20 +23,19 @@ class ReporteRepository(
             }
         })
     }
-    fun listarReportesPorParticipante(id_participante: Int, callback: (Result<List<Reporte>>) -> Unit){
-        fun listarReportesPorReporte(id_participante: Int, callback: (Result<List<Reporte>>) -> Unit){
-            serviceReporte.listarReportesPorParticipante(id_participante).enqueue(object : Callback<List<Reporte>>{
-                override fun onResponse(call: Call<List<Reporte>>, response: Response<List<Reporte>>){
-                    if (response.isSuccessful && response.body() != null){
-                        callback(Result.Success(response.body()!!))
-                    } else{
-                        callback(Result.Error("No se encontró información"))
-                    }
+    fun listarReportesPorParticipante(id_participante: Int, callback: (Result<List<Reporte>>) -> Unit) {
+        serviceReporte.listarReportesPorParticipante(id_participante).enqueue(object : Callback<List<Reporte>> {
+            override fun onResponse(call: Call<List<Reporte>>, response: Response<List<Reporte>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    callback(Result.Success(response.body()!!))
+                } else {
+                    callback(Result.Error("No se encontró información"))
                 }
-                override fun onFailure(call: Call<List<Reporte>>, t: Throwable) {
-                    callback(Result.Error(t.message.toString()))
-                }
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<List<Reporte>>, t: Throwable) {
+                callback(Result.Error(t.message.toString()))
+            }
+        })
     }
 }

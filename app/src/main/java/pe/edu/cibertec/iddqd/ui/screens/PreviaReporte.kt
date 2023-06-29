@@ -59,15 +59,16 @@ fun PreviaReporte(
     vid: String?,
     mid: String?,
     tid: String?
-){
+) {
     val context = LocalContext.current
-    val elVidejuego = remember { mutableStateOf(Videojuego(0,"",0))}
-    val elMotivo = remember { mutableStateOf(Motivo(0,""))}
-    val elTiempo = remember { mutableStateOf(Tiempo(0,"",0))}
+    val elVidejuego = remember { mutableStateOf(Videojuego(0, "", 0)) }
+    val elMotivo = remember { mutableStateOf(Motivo(0, "")) }
+    val elTiempo = remember { mutableStateOf(Tiempo(0, "", 0)) }
     val repoVideojuego = VideojuegoRepository()
     val repoMotivo = MotivoRepository()
     val repoTiempo = TiempoRepository()
     val repoReporte = ReporteRepository()
+
     if (vid != null) {
         repoVideojuego.obtenerVideojuegoPorId(vid.toInt()) { result ->
             if (result is Result.Success) {
@@ -95,6 +96,7 @@ fun PreviaReporte(
             }
         }
     }
+
     val estaFecha = SimpleDateFormat("dd/MM/yyyy").format(Date())
 
     Scaffold(
@@ -121,7 +123,7 @@ fun PreviaReporte(
                 )
             }
         }
-    ){
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -139,16 +141,30 @@ fun PreviaReporte(
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
-                Button( onClick = { /*TODO*/ }){
-                    Text(
-                        text = "Empezar de nuevo",
+                Button(onClick = {
+                    val reporte = Reporte(
+                        id = 0,
+                        id_participante = pid?.toInt() ?: 0,
+                        id_videojuego = vid?.toInt() ?: 0,
+                        id_motivo = mid?.toInt() ?: 0,
+                        fecha = estaFecha
                     )
-                    Modifier.width(32.dp)
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Button( onClick = {
-                    Toast.makeText(context, "DNI: $dni, N: $pid, Videojuego: $vid, Mo: $mid y Fecha: $estaFecha", Toast.LENGTH_SHORT).show()
-                }){
+
+                    repoReporte.crearReporte(
+                        id = reporte.id,
+                        id_participante = reporte.id_participante,
+                        id_videojuego = reporte.id_videojuego,
+                        id_motivo = reporte.id_motivo,
+                        id_tiempo = 0, // Reemplaza con el valor correspondiente de id_tiempo
+                        fecha = reporte.fecha
+                    ) { result ->
+                        if (result is Result.Success) {
+                            Toast.makeText(context, "Reporte guardado correctamente", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Error al guardar el reporte", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }) {
                     Text(
                         text = "Registrar partida",
                     )

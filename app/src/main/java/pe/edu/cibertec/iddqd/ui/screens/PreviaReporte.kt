@@ -54,7 +54,7 @@ fun PreviaReporte(
     tid: String?
 ) {
     val context = LocalContext.current
-    val elVidejuego = remember { mutableStateOf(Videojuego(0, "", 0)) }
+    val elVidejuego = remember { mutableStateOf(Videojuego(0, "", 0, "")) }
     val elMotivo = remember { mutableStateOf(Motivo(0, "")) }
     val elTiempo = remember { mutableStateOf(Tiempo(0, "", 0)) }
     val repoVideojuego = VideojuegoRepository()

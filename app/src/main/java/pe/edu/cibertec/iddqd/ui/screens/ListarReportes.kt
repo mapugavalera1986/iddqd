@@ -68,6 +68,20 @@ fun ListarReportes(navController: NavController, dni: String?) {
     val repoVideojuego = VideojuegoRepository()
     val repoMotivo = MotivoRepository()
     val repoTiempo = TiempoRepository()
+    repoVideojuego.listarVideojuegos { rvdjg ->
+        if (rvdjg is Result.Success) {
+            videojuegos.value = rvdjg.data!!
+        } else {
+            Toast.makeText(context, rvdjg.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+    repoMotivo.listarMotivos { rmot ->
+        if (rmot is Result.Success) {
+            motivos.value = rmot.data!!
+        } else {
+            Toast.makeText(context, rmot.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
     if (dni != null) {
         repoParticipantes.obtenerParticipantePorDni(dni) { rpart ->
             if (rpart is Result.Success) {
@@ -77,32 +91,13 @@ fun ListarReportes(navController: NavController, dni: String?) {
                     if (reportesResult is Result.Success) {
                         reportes.value = reportesResult.data ?: emptyList()
                     } else {
-                        Toast.makeText(context, reportesResult.message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            reportesResult.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-                repoVideojuego.listarVideojuegos { rvdjg ->
-                    if (rvdjg is Result.Success) {
-                        videojuegos.value = rvdjg.data!!
-                    } else {
-                        Toast.makeText(context, rvdjg.message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                repoMotivo.listarMotivos { rmot ->
-                    if (rmot is Result.Success) {
-                        motivos.value = rmot.data!!
-                    } else {
-                        Toast.makeText(context, rmot.message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                repoTiempo.listarTiempo { rtiem ->
-                    if (rtiem is Result.Success) {
-                        eltiempo.value = rtiem.data!!
-                    } else {
-                        Toast.makeText(context, rtiem.message.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
-                Toast.makeText(context, rpart.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

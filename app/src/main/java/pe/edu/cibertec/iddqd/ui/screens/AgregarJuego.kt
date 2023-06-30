@@ -2,7 +2,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,11 +23,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.skydoves.landscapist.coil.CoilImage
 import pe.edu.cibertec.iddqd.data.model.Videojuego
 import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.util.Result
@@ -80,15 +82,22 @@ fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
+                        .fillMaxWidth()
                         .height(64.dp),
-                    onClick = {
+                    onClick ={
                         val juego = videojuego.id.toString()
                         //Toast.makeText(context, "DNI: $dni, N: $pid y Videojuego: $juego", Toast.LENGTH_SHORT).show()
                         navController.navigate("ElegirMotivo/$dni/$pid/$juego/")
                     }
-                ) {
-                    Box(Modifier.padding(16.dp)) {
-                        Text(videojuego.nmbr)
+                ){
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Card(modifier = Modifier.padding(8.dp).weight(2f)) {
+                            CoilImage(imageModel = { videojuego.url })
+                            Text(videojuego.nmbr, modifier = Modifier.padding(20.dp))
+                        }
+                        Card(modifier = Modifier.padding(8.dp).weight(6f)) {
+                            Text(videojuego.nmbr)
+                        }
                     }
                 }
             }

@@ -144,7 +144,7 @@ fun ListarReportes(navController: NavController, dni: String?) {
                                 val vdjg = reporte.id_videojuego - 1
                                 val mtv = reporte.id_motivo - 1
                                 val temp = reporte.id_tiempo - 1
-                                Text("${reporte.fecha}")
+                                Text("Registro de ${reporte.fecha}")
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text("Jugué a ${videojuegos.value[vdjg].nmbr}")
                                 Spacer(modifier = Modifier.height(8.dp))

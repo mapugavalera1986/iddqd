@@ -30,7 +30,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,49 +39,49 @@ import pe.edu.cibertec.iddqd.data.model.Reporte
 import pe.edu.cibertec.iddqd.data.model.Tiempo
 import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
 import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
-import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.util.Result
 
 @Composable
 fun contarRegistros(num: Int): String {
     val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
-    ReporteRepository().listarReportesPorParticipante(num){rpta ->
-        if(rpta is Result.Success){
+    ReporteRepository().listarReportesPorParticipante(num) { rpta ->
+        if (rpta is Result.Success) {
             reportes.value = rpta.data!!
         }
     }
     return "${reportes.value.size}"
 }
+
 @Composable
 fun contarHorasJuego(num: Int): String {
     var resultado = ""
-    val reportes = remember {mutableStateOf(listOf<Reporte>()) }
-    ReporteRepository().listarReportesPorParticipante(num){rpta ->
-        if(rpta is Result.Success){
+    val reportes = remember { mutableStateOf(listOf<Reporte>()) }
+    ReporteRepository().listarReportesPorParticipante(num) { rpta ->
+        if (rpta is Result.Success) {
             reportes.value = rpta.data!!
         }
     }
     val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
-    TiempoRepository().listarTiempo {temp ->
-        if(temp is Result.Success){
+    TiempoRepository().listarTiempo { temp ->
+        if (temp is Result.Success) {
             eltiempo.value = temp.data!!
         }
     }
     var sumarTiempo = 0.0
-    reportes.value.forEach{ reporte ->
-        val temp = reporte.id_tiempo-1
+    reportes.value.forEach { reporte ->
+        val temp = reporte.id_tiempo - 1
         sumarTiempo += eltiempo.value[temp].minutos
     }
-    var minutos = (sumarTiempo%60).toInt()
-    var horas = ((sumarTiempo-minutos)/60).toInt()
-    resultado = if(minutos>0){
+    var minutos = (sumarTiempo % 60).toInt()
+    var horas = ((sumarTiempo - minutos) / 60).toInt()
+    resultado = if (minutos > 0) {
         "$horas horas y $minutos minutos"
-    }
-    else{
+    } else {
         "$horas horas"
     }
     return resultado
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,25 +126,33 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
                     .height(320.dp)
                     .padding(16.dp)
             ) {
-                Box(Modifier.padding(16.dp)){
-                    Text("Partidas registradas hasta ahora",
+                Box(Modifier.padding(16.dp)) {
+                    Text(
+                        "Partidas registradas hasta ahora",
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center)
+                        textAlign = TextAlign.Center
+                    )
                 }
-                Box(Modifier.padding(16.dp)){
-                    Text(contarRegistros(pid!!.toInt()),
+                Box(Modifier.padding(16.dp)) {
+                    Text(
+                        contarRegistros(pid!!.toInt()),
                         textAlign = TextAlign.Center,
-                        fontSize = 20.sp)
+                        fontSize = 20.sp
+                    )
                 }
-                Box(Modifier.padding(16.dp)){
-                    Text("Minutos en total",
+                Box(Modifier.padding(16.dp)) {
+                    Text(
+                        "Minutos en total",
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center)
+                        textAlign = TextAlign.Center
+                    )
                 }
-                Box(Modifier.padding(16.dp)){
-                    Text(contarHorasJuego(pid!!.toInt()),
+                Box(Modifier.padding(16.dp)) {
+                    Text(
+                        contarHorasJuego(pid!!.toInt()),
                         textAlign = TextAlign.Center,
-                        fontSize = 20.sp)
+                        fontSize = 20.sp
+                    )
                 }
             }
             Row(

@@ -3,6 +3,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,12 +26,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.skydoves.landscapist.coil.CoilImage
 import pe.edu.cibertec.iddqd.data.model.Motivo
 import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.model.Reporte
@@ -54,7 +57,7 @@ fun ListarReportes(navController: NavController, dni: String?) {
     val repoVideojuego = VideojuegoRepository()
     val repoMotivo = MotivoRepository()
     val repoTiempo = TiempoRepository()
-    val reportes =  remember {mutableStateOf(listOf<Reporte>()) }
+    val reportes = remember { mutableStateOf(listOf<Reporte>()) }
     val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
     val motivos = remember { mutableStateOf(listOf<Motivo>()) }
     val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
@@ -138,20 +141,38 @@ fun ListarReportes(navController: NavController, dni: String?) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 8.dp)
+                                .height(160.dp)
                         ) {
                             Column(
-                                modifier = Modifier.padding(16.dp)
+                                modifier = Modifier.padding(4.dp)
                             ) {
                                 val vdjg = reporte.id_videojuego - 1
                                 val mtv = reporte.id_motivo - 1
                                 val temp = reporte.id_tiempo - 1
-                                Text("Registro de ${reporte.fecha}",fontWeight = FontWeight.Bold)
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text("Jugué a ${videojuegos.value[vdjg].nmbr}")
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text("¿El motivo? ${motivos.value[mtv].dscrpcn}")
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text("Jugué por ${eltiempo.value[temp].dscrpcn} (${eltiempo.value[temp].minutos})")
+                                Row(verticalAlignment = CenterVertically) {
+                                    Card(modifier = Modifier
+                                        .padding(4.dp)
+                                        .weight(6f)) {
+                                        Text(
+                                            "Registro de ${reporte.fecha}",
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text("Jugué a ${videojuegos.value[vdjg].nmbr}")
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text("¿El motivo? ${motivos.value[mtv].dscrpcn}")
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text("Jugué por ${eltiempo.value[temp].dscrpcn}")
+                                    }
+                                    Card(
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .weight(2f)
+                                            .align(CenterVertically)
+                                    ) {
+                                        CoilImage(imageModel = { videojuegos.value[vdjg].url })
+                                    }
+                                }
                             }
                         }
                     }

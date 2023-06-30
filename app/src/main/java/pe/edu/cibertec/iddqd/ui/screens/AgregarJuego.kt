@@ -84,18 +84,22 @@ fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
                         .fillMaxWidth()
                         .fillMaxWidth()
                         .height(64.dp),
-                    onClick ={
+                    onClick = {
                         val juego = videojuego.id.toString()
                         //Toast.makeText(context, "DNI: $dni, N: $pid y Videojuego: $juego", Toast.LENGTH_SHORT).show()
                         navController.navigate("ElegirMotivo/$dni/$pid/$juego/")
                     }
-                ){
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Card(modifier = Modifier.padding(8.dp).weight(2f)) {
+                        Card(modifier = Modifier
+                            .padding(8.dp)
+                            .weight(2f)) {
                             CoilImage(imageModel = { videojuego.url })
                             Text(videojuego.nmbr, modifier = Modifier.padding(20.dp))
                         }
-                        Card(modifier = Modifier.padding(8.dp).weight(6f)) {
+                        Card(modifier = Modifier
+                            .padding(8.dp)
+                            .weight(6f)) {
                             Text(videojuego.nmbr)
                         }
                     }

@@ -4,5 +4,5 @@ data class Videojuego(
     val id: Int,
     val nmbr: String,
     val id_gnr: Int,
-    val url : String
+    val url: String
 )

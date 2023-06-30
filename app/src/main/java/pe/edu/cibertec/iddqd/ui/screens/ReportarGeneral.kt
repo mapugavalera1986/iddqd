@@ -1,7 +1,9 @@
 package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +36,7 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?){
         topBar = {
             Surface(shadowElevation = 8.dp) {
                 TopAppBar(
-                    title = { Text("Datos que reportaste") },
+                    title = { Text("Información personal") },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = Color.White,
@@ -64,11 +67,24 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?){
                 + "No te olvides de cambiarlos cuando todo esté listo.")
             Spacer(modifier = Modifier.height(16.dp))
             Card(
-                modifier = Modifier.width(400.dp).height(300.dp).padding(16.dp)
+                modifier = Modifier
+                    .width(400.dp)
+                    .height(300.dp)
+                    .padding(16.dp)
             ){
                 Text("Tiempo total con videojuegos:")
                 Text("Motivo principal:")
                 Text("Juego que utilizas más:")
+            }
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ){
+                Button(onClick = { navController.navigate("Iniciar") }) {
+                    Text(text = "Salir (necesitarás volver a ingresar)")
+                }
             }
         }
     }

@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 import pe.edu.cibertec.iddqd.util.Result

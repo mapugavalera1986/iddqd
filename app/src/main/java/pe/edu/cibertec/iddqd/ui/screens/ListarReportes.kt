@@ -59,15 +59,16 @@ import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 fun ListarReportes(navController: NavController, dni: String?) {
     val context = LocalContext.current
     val par = remember { mutableStateOf(Participante(0, "", "", "", 0)) }
-    val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
-    val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
-    val motivos = remember { mutableStateOf(listOf<Motivo>()) }
-    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
     val repoParticipantes = ParticipanteRepository()
     val repoReportes = ReporteRepository()
     val repoVideojuego = VideojuegoRepository()
     val repoMotivo = MotivoRepository()
     val repoTiempo = TiempoRepository()
+    val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
+    val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
+    val motivos = remember { mutableStateOf(listOf<Motivo>()) }
+    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
+
     repoVideojuego.listarVideojuegos { rvdjg ->
         if (rvdjg is Result.Success) {
             videojuegos.value = rvdjg.data!!
@@ -80,6 +81,13 @@ fun ListarReportes(navController: NavController, dni: String?) {
             motivos.value = rmot.data!!
         } else {
             Toast.makeText(context, rmot.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+    repoTiempo.listarTiempo { tmt ->
+        if(tmt is Result.Success){
+            eltiempo.value = tmt.data!!
+        } else {
+            Toast.makeText(context, tmt.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }
     if (dni != null) {
@@ -147,9 +155,13 @@ fun ListarReportes(navController: NavController, dni: String?) {
                                 val vdjg = reporte.id_videojuego-1
                                 val mtv = reporte.id_motivo-1
                                 val temp = reporte.id_tiempo-1
-                                Text("Jugaste a ${videojuegos.value[vdjg].nmbr}")
+                                Text("${reporte.fecha}")
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("Jugué a ${videojuegos.value[vdjg].nmbr}")
+                                Spacer(modifier = Modifier.height(8.dp))
                                 Text("¿El motivo? ${motivos.value[mtv].dscrpcn}")
-                                Text("Jugaste por ${eltiempo.value[temp].dscrpcn}")
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("Jugué por ${eltiempo.value[temp].dscrpcn}")
                             }
                         }
                     }

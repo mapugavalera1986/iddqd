@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import pe.edu.cibertec.iddqd.data.model.Tiempo
 import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
-import pe.edu.cibertec.iddqd.util.Dummy
 import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,7 +42,6 @@ fun AgregarTiempo(
     vid: String?,
     mid: String?
 ){
-    val dummy = Dummy()
     val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
     val repoTiempo = TiempoRepository()
     val context = LocalContext.current

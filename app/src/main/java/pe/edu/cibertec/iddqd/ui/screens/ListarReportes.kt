@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import pe.edu.cibertec.iddqd.data.model.Motivo
@@ -53,7 +54,7 @@ fun ListarReportes(navController: NavController, dni: String?) {
     val repoVideojuego = VideojuegoRepository()
     val repoMotivo = MotivoRepository()
     val repoTiempo = TiempoRepository()
-    val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
+    val reportes =  remember {mutableStateOf(listOf<Reporte>()) }
     val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
     val motivos = remember { mutableStateOf(listOf<Motivo>()) }
     val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
@@ -144,13 +145,13 @@ fun ListarReportes(navController: NavController, dni: String?) {
                                 val vdjg = reporte.id_videojuego - 1
                                 val mtv = reporte.id_motivo - 1
                                 val temp = reporte.id_tiempo - 1
-                                Text("Registro de ${reporte.fecha}")
+                                Text("Registro de ${reporte.fecha}",fontWeight = FontWeight.Bold)
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text("Jugué a ${videojuegos.value[vdjg].nmbr}")
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text("¿El motivo? ${motivos.value[mtv].dscrpcn}")
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("Jugué por ${eltiempo.value[temp].dscrpcn}")
+                                Text("Jugué por ${eltiempo.value[temp].dscrpcn} (${eltiempo.value[temp].minutos})")
                             }
                         }
                     }

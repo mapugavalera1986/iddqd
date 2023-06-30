@@ -2,6 +2,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,14 +30,59 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import pe.edu.cibertec.iddqd.data.model.Reporte
 import pe.edu.cibertec.iddqd.data.model.Tiempo
-import pe.edu.cibertec.iddqd.data.model.Videojuego
+import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
 import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
 import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.util.Result
 
+@Composable
+fun contarRegistros(num: Int): String {
+    val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
+    ReporteRepository().listarReportesPorParticipante(num){rpta ->
+        if(rpta is Result.Success){
+            reportes.value = rpta.data!!
+        }
+    }
+    return "${reportes.value.size}"
+}
+@Composable
+fun contarHorasJuego(num: Int): String {
+    var resultado = ""
+    val reportes = remember {mutableStateOf(listOf<Reporte>()) }
+    ReporteRepository().listarReportesPorParticipante(num){rpta ->
+        if(rpta is Result.Success){
+            reportes.value = rpta.data!!
+        }
+    }
+    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
+    TiempoRepository().listarTiempo {temp ->
+        if(temp is Result.Success){
+            eltiempo.value = temp.data!!
+        }
+    }
+    var sumarTiempo = 0.0
+    reportes.value.forEach{ reporte ->
+        val temp = reporte.id_tiempo-1
+        sumarTiempo += eltiempo.value[temp].minutos
+    }
+    var minutos = (sumarTiempo%60).toInt()
+    var horas = ((sumarTiempo-minutos)/60).toInt()
+    resultado = if(minutos>0){
+        "$horas horas y $minutos minutos"
+    }
+    else{
+        "$horas horas"
+    }
+    return resultado
+}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,11 +127,26 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
                     .height(320.dp)
                     .padding(16.dp)
             ) {
-                Text("Tiempo total con videojuegos:")
-                Spacer(Modifier.height(8.dp))
-                Text("Motivo principal:")
-                Spacer(Modifier.height(8.dp))
-                Text("Juego que utilizas más:")
+                Box(Modifier.padding(16.dp)){
+                    Text("Partidas registradas hasta ahora",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center)
+                }
+                Box(Modifier.padding(16.dp)){
+                    Text(contarRegistros(pid!!.toInt()),
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp)
+                }
+                Box(Modifier.padding(16.dp)){
+                    Text("Minutos en total",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center)
+                }
+                Box(Modifier.padding(16.dp)){
+                    Text(contarHorasJuego(pid!!.toInt()),
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp)
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -97,21 +158,6 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
                     Text(text = "Salir (necesitarás volver a ingresar)")
                 }
             }
-            Miraesto(pid!!.toInt())
         }
     }
-}
-@Composable
-fun Miraesto(pid: Int){
-    var sumar = 0.0
-    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
-    TiempoRepository().obtenerTiempoPorId(pid){rtm ->
-        if(rtm is Result.Success){
-            eltiempo.value = rtm.data!!
-        }
-    }
-    eltiempo.value.forEach{tiempo ->
-        sumar += tiempo.minutos
-    }
-    Text("Si ves esto, vas bien ${eltiempo.value.size} y ${(sumar/60)}")
 }

@@ -40,9 +40,9 @@ fun AgregarMotivo(
     pid: String?,
     vid: String?
 ){
+    val context = LocalContext.current
     val motivos = remember { mutableStateOf(listOf<Motivo>()) }
     val repoMotivo = MotivoRepository()
-    val context = LocalContext.current
     repoMotivo.listarMotivos { result ->
         if (result is Result.Success) {
             motivos.value = result.data!!

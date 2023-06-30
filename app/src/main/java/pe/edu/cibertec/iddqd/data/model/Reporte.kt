@@ -5,5 +5,6 @@ data class Reporte(
     val id_participante : Int,
     val id_videojuego : Int,
     val id_motivo : Int,
+    val id_tiempo: Int,
     val fecha : String
 )

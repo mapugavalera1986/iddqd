@@ -40,11 +40,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pe.edu.cibertec.iddqd.data.model.Motivo
 import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.model.Reporte
 import pe.edu.cibertec.iddqd.data.model.Tiempo
+import pe.edu.cibertec.iddqd.data.model.Videojuego
+import pe.edu.cibertec.iddqd.data.repository.MotivoRepository
 import pe.edu.cibertec.iddqd.data.repository.ParticipanteRepository
 import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
+import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
+import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.util.Result
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
@@ -52,16 +57,21 @@ import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListarReportes(navController: NavController, dni: String?) {
+    val context = LocalContext.current
     val par = remember { mutableStateOf(Participante(0, "", "", "", 0)) }
     val reportes = remember { mutableStateOf<List<Reporte>>(emptyList()) }
-    val context = LocalContext.current
+    val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
+    val motivos = remember { mutableStateOf(listOf<Motivo>()) }
+    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
     val repoParticipantes = ParticipanteRepository()
     val repoReportes = ReporteRepository()
-
+    val repoVideojuego = VideojuegoRepository()
+    val repoMotivo = MotivoRepository()
+    val repoTiempo = TiempoRepository()
     if (dni != null) {
-        repoParticipantes.obtenerParticipantePorDni(dni) { result ->
-            if (result is Result.Success) {
-                par.value = result.data?.get(0)!!
+        repoParticipantes.obtenerParticipantePorDni(dni) { rpart ->
+            if (rpart is Result.Success) {
+                par.value = rpart.data?.get(0)!!
                 val participanteId = par.value.id
                 repoReportes.listarReportesPorParticipante(participanteId) { reportesResult ->
                     if (reportesResult is Result.Success) {
@@ -70,12 +80,32 @@ fun ListarReportes(navController: NavController, dni: String?) {
                         Toast.makeText(context, reportesResult.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
+                repoVideojuego.listarVideojuegos { rvdjg ->
+                    if (rvdjg is Result.Success) {
+                        videojuegos.value = rvdjg.data!!
+                    } else {
+                        Toast.makeText(context, rvdjg.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                repoMotivo.listarMotivos { rmot ->
+                    if (rmot is Result.Success) {
+                        motivos.value = rmot.data!!
+                    } else {
+                        Toast.makeText(context, rmot.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                repoTiempo.listarTiempo { rtiem ->
+                    if (rtiem is Result.Success) {
+                        eltiempo.value = rtiem.data!!
+                    } else {
+                        Toast.makeText(context, rtiem.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
             } else {
-                Toast.makeText(context, result.message.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, rpart.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
-
     val pid = par.value.id.toString()
     val pnmbr = par.value.nmbrs
 
@@ -119,11 +149,12 @@ fun ListarReportes(navController: NavController, dni: String?) {
                             Column(
                                 modifier = Modifier.padding(16.dp)
                             ) {
-                                Text("ID: ${reporte.id}")
-                                Text("ID Participante: ${reporte.id_participante}")
-                                Text("ID Videojuego: ${reporte.id_videojuego}")
-                                Text("ID Motivo: ${reporte.id_motivo}")
-                                Text("Fecha: ${reporte.fecha}")
+                                val vdjg = reporte.id_videojuego-1
+                                val mtv = reporte.id_motivo-1
+                                val temp = reporte.id_tiempo-1
+                                Text("Jugaste a ${videojuegos.value[vdjg].nmbr}")
+                                Text("¿El motivo? ${motivos.value[mtv].dscrpcn}")
+                                Text("Jugaste por ${eltiempo.value[temp].dscrpcn}")
                             }
                         }
                     }

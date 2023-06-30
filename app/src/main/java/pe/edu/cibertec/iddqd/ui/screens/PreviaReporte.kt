@@ -140,6 +140,7 @@ fun PreviaReporte(
                         id_participante = pid?.toInt() ?: 0,
                         id_videojuego = vid?.toInt() ?: 0,
                         id_motivo = mid?.toInt() ?: 0,
+                        id_tiempo = tid?.toInt() ?: 0,
                         fecha = estaFecha
                     )
 
@@ -148,7 +149,7 @@ fun PreviaReporte(
                         id_participante = reporte.id_participante,
                         id_videojuego = reporte.id_videojuego,
                         id_motivo = reporte.id_motivo,
-                        id_tiempo = 0, // Reemplaza con el valor correspondiente de id_tiempo
+                        id_tiempo = reporte.id_tiempo,
                         fecha = reporte.fecha
                     ) { result ->
                         if (result is Result.Success) {

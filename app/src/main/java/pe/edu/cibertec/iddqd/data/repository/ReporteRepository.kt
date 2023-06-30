@@ -12,7 +12,7 @@ class ReporteRepository(
     private val serviceReporte: ReporteService = ApiClient.getServicioReporte()
 ) {
     fun crearReporte(id: Int, id_participante: Int, id_videojuego: Int, id_motivo: Int, id_tiempo: Int, fecha: String, callback: (Result<Boolean>) -> Unit) {
-        serviceReporte.crearReporte(Reporte(id, id_participante, id_videojuego, id_motivo, fecha)).enqueue(object : Callback<Reporte> {
+        serviceReporte.crearReporte(Reporte(id, id_participante, id_videojuego, id_motivo, id_tiempo, fecha)).enqueue(object : Callback<Reporte> {
             override fun onResponse(call: Call<Reporte>, response: Response<Reporte>) {
                 if (response.isSuccessful && response.body() != null) {
                     callback(Result.Success(true))

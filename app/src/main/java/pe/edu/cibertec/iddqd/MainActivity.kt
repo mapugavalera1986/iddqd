@@ -11,11 +11,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import pe.edu.cibertec.iddqd.ui.screens.Iniciar
-import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
 import pe.edu.cibertec.iddqd.ui.screens.AgregarJuego
 import pe.edu.cibertec.iddqd.ui.screens.AgregarMotivo
 import pe.edu.cibertec.iddqd.ui.screens.AgregarTiempo
+import pe.edu.cibertec.iddqd.ui.screens.Iniciar
+import pe.edu.cibertec.iddqd.ui.screens.ListarReportes
 import pe.edu.cibertec.iddqd.ui.screens.PreviaReporte
 import pe.edu.cibertec.iddqd.ui.screens.ReportarGeneral
 import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
@@ -42,13 +42,15 @@ fun NavigationComponent() {
         composable("Iniciar") {
             Iniciar(navController)
         }
-        composable("Reportes/{dni}/",
+        composable(
+            "Reportes/{dni}/",
 
-        ) {
+            ) {
             ListarReportes(navController, it.arguments?.getString("dni"))
         }
         composable("ElegirJuego/{dni}/{pid}/") {
-            AgregarJuego(navController,
+            AgregarJuego(
+                navController,
                 it.arguments?.getString("dni"),
                 it.arguments?.getString("pid")
             )
@@ -62,15 +64,17 @@ fun NavigationComponent() {
             )
         }
         composable("ElegirTiempo/{dni}/{pid}/{vid}/{mid}/") {
-            AgregarTiempo(navController,
+            AgregarTiempo(
+                navController,
                 it.arguments?.getString("dni"),
                 it.arguments?.getString("pid"),
                 it.arguments?.getString("vid"),
                 it.arguments?.getString("mid")
             )
         }
-        composable("Previsualizar/{dni}/{pid}/{vid}/{mid}/{tid}/"){
-            PreviaReporte(navController,
+        composable("Previsualizar/{dni}/{pid}/{vid}/{mid}/{tid}/") {
+            PreviaReporte(
+                navController,
                 it.arguments?.getString("dni"),
                 it.arguments?.getString("pid"),
                 it.arguments?.getString("vid"),
@@ -80,14 +84,14 @@ fun NavigationComponent() {
         }
 
         composable("Estatus/{dni}/{pid}/") {
-            ReportarGeneral(navController,
+            ReportarGeneral(
+                navController,
                 it.arguments?.getString("dni"),
                 it.arguments?.getString("pid")
             )
         }
     }
 }
-
 
 
 @Composable

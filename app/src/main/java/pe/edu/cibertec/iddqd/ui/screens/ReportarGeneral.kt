@@ -25,10 +25,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import pe.edu.cibertec.iddqd.data.model.Tiempo
+import pe.edu.cibertec.iddqd.data.model.Videojuego
+import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
+import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
+import pe.edu.cibertec.iddqd.util.Result
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,8 +77,8 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
             Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
-                    .width(600.dp)
-                    .height(600.dp)
+                    .width(640.dp)
+                    .height(320.dp)
                     .padding(16.dp)
             ) {
                 Text("Tiempo total con videojuegos:")
@@ -90,6 +97,21 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
                     Text(text = "Salir (necesitarás volver a ingresar)")
                 }
             }
+            Miraesto(pid!!.toInt())
         }
     }
+}
+@Composable
+fun Miraesto(pid: Int){
+    var sumar = 0.0
+    val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
+    TiempoRepository().obtenerTiempoPorId(pid){rtm ->
+        if(rtm is Result.Success){
+            eltiempo.value = rtm.data!!
+        }
+    }
+    eltiempo.value.forEach{tiempo ->
+        sumar += tiempo.minutos
+    }
+    Text("Si ves esto, vas bien ${eltiempo.value.size} y ${(sumar/60)}")
 }

@@ -93,7 +93,7 @@ fun AgregarTiempo(
                         navController.navigate("Previsualizar/$dni/$pid/$vid/$mid/$eltiempo/")
                     }
                 ) {
-                    Box(Modifier.padding(16.dp)){
+                    Box(Modifier.padding(16.dp)) {
                         Text(tiempo.dscrpcn)
                     }
                 }

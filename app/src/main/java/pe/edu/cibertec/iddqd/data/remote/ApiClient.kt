@@ -14,18 +14,23 @@ object ApiClient {
         .baseUrl(API_URL_PRINCIPAL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    fun getServicioParticipante() : ParticipanteService {
+
+    fun getServicioParticipante(): ParticipanteService {
         return getRetrofit().create(ParticipanteService::class.java)
     }
+
     fun getServicioVideojuego(): VideojuegoService {
         return getRetrofit().create(VideojuegoService::class.java)
     }
+
     fun getServicioMotivo(): MotivoService {
         return getRetrofit().create(MotivoService::class.java)
     }
+
     fun getServicioTiempo(): TiempoService {
         return getRetrofit().create(TiempoService::class.java)
     }
+
     fun getServicioReporte(): ReporteService {
         return getRetrofit().create(ReporteService::class.java)
     }

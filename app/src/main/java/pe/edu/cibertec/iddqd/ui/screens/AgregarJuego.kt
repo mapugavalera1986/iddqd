@@ -2,6 +2,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,7 +38,6 @@ import pe.edu.cibertec.iddqd.util.Result
 fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
     val videojuegos = remember { mutableStateOf(listOf<Videojuego>()) }
     val repoVideojuego = VideojuegoRepository()
-    val spcl = dni
     val context = LocalContext.current
     repoVideojuego.listarVideojuegos { result ->
         if (result is Result.Success) {
@@ -59,7 +59,8 @@ fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                navController.navigate("Reportes/$dni/") }
+                                navController.navigate("Reportes/$dni/")
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -73,21 +74,22 @@ fun AgregarJuego(navController: NavController, dni: String?, pid: String?) {
         }
     ) {
         //Spacer(Modifier.padding(80.dp,80.dp,80.dp,80.dp))
-        LazyColumn (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
+        LazyColumn(Modifier.padding(0.dp, 72.dp, 0.dp, 0.dp)) {
             items(videojuegos.value) { videojuego ->
                 Card(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
-                        .fillMaxWidth()
                         .height(64.dp),
-                    onClick ={
-                        var juego = videojuego.id.toString()
+                    onClick = {
+                        val juego = videojuego.id.toString()
                         //Toast.makeText(context, "DNI: $dni, N: $pid y Videojuego: $juego", Toast.LENGTH_SHORT).show()
                         navController.navigate("ElegirMotivo/$dni/$pid/$juego/")
                     }
-                ){
-                    Text(videojuego.nmbr)
+                ) {
+                    Box(Modifier.padding(16.dp)) {
+                        Text(videojuego.nmbr)
+                    }
                 }
             }
         }

@@ -8,7 +8,8 @@ import retrofit2.http.Query
 interface MotivoService {
     @GET("motivos")
     fun listarMotivos(): Call<List<Motivo>>
+
     @GET("motivos")
-    fun obtenerMotivoPorId(@Query("id") id : Int) : Call<List<Motivo>>
+    fun obtenerMotivoPorId(@Query("id") id: Int): Call<List<Motivo>>
 
 }

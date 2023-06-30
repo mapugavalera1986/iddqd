@@ -2,6 +2,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,7 +40,7 @@ fun AgregarMotivo(
     dni: String?,
     pid: String?,
     vid: String?
-){
+) {
     val context = LocalContext.current
     val motivos = remember { mutableStateOf(listOf<Motivo>()) }
     val repoMotivo = MotivoRepository()
@@ -62,7 +63,7 @@ fun AgregarMotivo(
                     ),
                     navigationIcon = {
                         IconButton(
-                            onClick = {navController.navigate("ElegirJuego/$dni/$pid/")}
+                            onClick = { navController.navigate("ElegirJuego/$dni/$pid/") }
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
@@ -76,21 +77,23 @@ fun AgregarMotivo(
         }
     ) {
         //Spacer(Modifier.padding(80.dp,80.dp,80.dp,80.dp))
-        LazyColumn (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
+        LazyColumn(Modifier.padding(0.dp, 72.dp, 0.dp, 0.dp)) {
             items(motivos.value) { motivo ->
                 Card(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
                         .height(64.dp),
-                    onClick ={
-                        var elmotivo = motivo.id.toString()
+                    onClick = {
+                        val elmotivo = motivo.id.toString()
                         //Toast.makeText(context, "DNI: $dni, N: $pid, Videojuego: $vid "+
-                                //"y motivo $elmotivo", Toast.LENGTH_SHORT).show()
+                        //"y motivo $elmotivo", Toast.LENGTH_SHORT).show()
                         navController.navigate("ElegirTiempo/$dni/$pid/$vid/$elmotivo/")
                     }
-                ){
-                    Text(motivo.dscrpcn)
+                ) {
+                    Box(Modifier.padding(16.dp)) {
+                        Text(motivo.dscrpcn)
+                    }
                 }
             }
         }

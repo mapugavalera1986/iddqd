@@ -1,6 +1,5 @@
 package pe.edu.cibertec.iddqd.data.repository
 
-import android.provider.Telephony.Mms.Part
 import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.remote.ApiClient
 import pe.edu.cibertec.iddqd.data.remote.service.ParticipanteService
@@ -15,7 +14,10 @@ class ParticipanteRepository(
 ) {
     fun revisar(dni: String, callback: (Result<Boolean>) -> Unit) {
         serviceParticipante.revisar(dni).enqueue(object : Callback<List<Participante>> {
-            override fun onResponse(call: Call<List<Participante>>, response: Response<List<Participante>>) {
+            override fun onResponse(
+                call: Call<List<Participante>>,
+                response: Response<List<Participante>>
+            ) {
                 if (response.isSuccessful && response.body() != null) {
                     if (response.body()!!.isEmpty()) {
                         callback(Result.Success(true))
@@ -26,14 +28,19 @@ class ParticipanteRepository(
                     callback(Result.Error("No data found"))
                 }
             }
+
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
                 callback(Result.Error(t.message.toString()))
             }
         })
     }
+
     fun iniciarSSn(dni: String, callback: (Result<Boolean>) -> Unit) {
         serviceParticipante.iniciarSSn(dni).enqueue(object : Callback<List<Participante>> {
-            override fun onResponse(call: Call<List<Participante>>, response: Response<List<Participante>>) {
+            override fun onResponse(
+                call: Call<List<Participante>>,
+                response: Response<List<Participante>>
+            ) {
                 if (response.isSuccessful && response.body() != null) {
                     if (response.body()!!.isNotEmpty()) {
                         callback(Result.Success(true))
@@ -44,23 +51,30 @@ class ParticipanteRepository(
                     callback(Result.Error("No existe"))
                 }
             }
+
             override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
                 callback(Result.Error(t.message.toString()))
             }
         })
     }
-    fun obtenerParticipantePorDni(dni: String, callback: (Result<List<Participante>>) -> Unit){
-        serviceParticipante.obtenerParticipantePorDni(dni).enqueue(object : Callback<List<Participante>>{
-            override fun onResponse(call: Call<List<Participante>>, response: Response<List<Participante>>){
-                if (response.isSuccessful && response.body() != null){
-                    callback(Result.Success(response.body()!!))
-                } else{
-                    callback(Result.Error("No se encontró información"))
+
+    fun obtenerParticipantePorDni(dni: String, callback: (Result<List<Participante>>) -> Unit) {
+        serviceParticipante.obtenerParticipantePorDni(dni)
+            .enqueue(object : Callback<List<Participante>> {
+                override fun onResponse(
+                    call: Call<List<Participante>>,
+                    response: Response<List<Participante>>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        callback(Result.Success(response.body()!!))
+                    } else {
+                        callback(Result.Error("No se encontró información"))
+                    }
                 }
-            }
-            override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
-                callback(Result.Error(t.message.toString()))
-            }
-        })
+
+                override fun onFailure(call: Call<List<Participante>>, t: Throwable) {
+                    callback(Result.Error(t.message.toString()))
+                }
+            })
     }
 }

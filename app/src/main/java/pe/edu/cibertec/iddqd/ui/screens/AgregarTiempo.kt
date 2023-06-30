@@ -3,6 +3,7 @@ package pe.edu.cibertec.iddqd.ui.screens
 import android.annotation.SuppressLint
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,7 +42,7 @@ fun AgregarTiempo(
     pid: String?,
     vid: String?,
     mid: String?
-){
+) {
     val eltiempo = remember { mutableStateOf(listOf<Tiempo>()) }
     val repoTiempo = TiempoRepository()
     val context = LocalContext.current
@@ -78,21 +79,23 @@ fun AgregarTiempo(
         }
     ) {
         //Spacer(Modifier.padding(80.dp,80.dp,80.dp,80.dp))
-        LazyColumn (Modifier.padding(0.dp,72.dp,0.dp,0.dp)){
+        LazyColumn(Modifier.padding(0.dp, 72.dp, 0.dp, 0.dp)) {
             items(eltiempo.value) { tiempo ->
                 Card(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
                         .height(64.dp),
-                    onClick ={
-                        var eltiempo = tiempo.id.toString()
+                    onClick = {
+                        val eltiempo = tiempo.id.toString()
                         //Toast.makeText(context, "DNI: $dni, N: $pid, Videojuego: $vid "+
-                                //", motivo $mid y tiempo: $eltiempo", Toast.LENGTH_SHORT).show()
+                        //", motivo $mid y tiempo: $eltiempo", Toast.LENGTH_SHORT).show()
                         navController.navigate("Previsualizar/$dni/$pid/$vid/$mid/$eltiempo/")
                     }
-                ){
-                    Text(tiempo.dscrpcn)
+                ) {
+                    Box(Modifier.padding(16.dp)){
+                        Text(tiempo.dscrpcn)
+                    }
                 }
             }
         }

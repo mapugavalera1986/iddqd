@@ -153,10 +153,18 @@ fun PreviaReporte(
                         fecha = reporte.fecha
                     ) { result ->
                         if (result is Result.Success) {
-                            Toast.makeText(context, "Reporte guardado correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Reporte guardado correctamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         } else {
-                            Toast.makeText(context, "Error al guardar el reporte", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Error al guardar el reporte",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         navController.navigate("Reportes/${dni}/")
                     }

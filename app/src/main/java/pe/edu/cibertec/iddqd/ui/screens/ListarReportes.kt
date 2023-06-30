@@ -2,23 +2,17 @@ package pe.edu.cibertec.iddqd.ui.screens
 
 import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,15 +25,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pe.edu.cibertec.iddqd.data.model.Motivo
 import pe.edu.cibertec.iddqd.data.model.Participante
 import pe.edu.cibertec.iddqd.data.model.Reporte
@@ -51,7 +41,6 @@ import pe.edu.cibertec.iddqd.data.repository.ReporteRepository
 import pe.edu.cibertec.iddqd.data.repository.TiempoRepository
 import pe.edu.cibertec.iddqd.data.repository.VideojuegoRepository
 import pe.edu.cibertec.iddqd.util.Result
-import pe.edu.cibertec.iddqd.ui.theme.ReportarVideojuegosTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +73,7 @@ fun ListarReportes(navController: NavController, dni: String?) {
         }
     }
     repoTiempo.listarTiempo { tmt ->
-        if(tmt is Result.Success){
+        if (tmt is Result.Success) {
             eltiempo.value = tmt.data!!
         } else {
             Toast.makeText(context, tmt.message.toString(), Toast.LENGTH_SHORT).show()
@@ -152,9 +141,9 @@ fun ListarReportes(navController: NavController, dni: String?) {
                             Column(
                                 modifier = Modifier.padding(16.dp)
                             ) {
-                                val vdjg = reporte.id_videojuego-1
-                                val mtv = reporte.id_motivo-1
-                                val temp = reporte.id_tiempo-1
+                                val vdjg = reporte.id_videojuego - 1
+                                val mtv = reporte.id_motivo - 1
+                                val temp = reporte.id_tiempo - 1
                                 Text("${reporte.fecha}")
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text("Jugué a ${videojuegos.value[vdjg].nmbr}")

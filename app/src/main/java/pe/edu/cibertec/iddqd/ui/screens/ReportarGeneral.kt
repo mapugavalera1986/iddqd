@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -31,7 +33,7 @@ import androidx.navigation.NavController
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportarGeneral(navController: NavController, dni: String?, pid: String?){
+fun ReportarGeneral(navController: NavController, dni: String?, pid: String?) {
     Scaffold(
         topBar = {
             Surface(shadowElevation = 8.dp) {
@@ -56,24 +58,26 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?){
                 )
             }
         }
-    ){
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp, 16.dp)
         ) {
             Spacer(modifier = Modifier.height(72.dp))
-            Text("Aquí van algunos reportes generales. "
-                + "No te olvides de cambiarlos cuando todo esté listo.")
+            Text("Tu información sobre cómo has utilizado los videojuegos.")
             Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
-                    .width(400.dp)
-                    .height(300.dp)
+                    .width(600.dp)
+                    .height(600.dp)
                     .padding(16.dp)
-            ){
+            ) {
                 Text("Tiempo total con videojuegos:")
+                Spacer(Modifier.height(8.dp))
                 Text("Motivo principal:")
+                Spacer(Modifier.height(8.dp))
                 Text("Juego que utilizas más:")
             }
             Row(
@@ -81,7 +85,7 @@ fun ReportarGeneral(navController: NavController, dni: String?, pid: String?){
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-            ){
+            ) {
                 Button(onClick = { navController.navigate("Iniciar") }) {
                     Text(text = "Salir (necesitarás volver a ingresar)")
                 }

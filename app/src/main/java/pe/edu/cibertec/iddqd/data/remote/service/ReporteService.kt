@@ -10,6 +10,7 @@ import retrofit2.http.Query
 interface ReporteService {
     @POST("reportes")
     fun crearReporte(@Body nuevoreporte: Reporte): Call<Reporte>
+
     @GET("reportes")
     fun listarReportesPorParticipante(@Query("id_participante") id_participante: Int): Call<List<Reporte>>
 }

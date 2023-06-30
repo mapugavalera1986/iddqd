@@ -8,6 +8,7 @@ import retrofit2.http.Query
 interface TiempoService {
     @GET("tiempo")
     fun listarTiempo(): Call<List<Tiempo>>
+
     @GET("tiempo")
-    fun obtenerTiempoPorId(@Query("id") id: Int) : Call<List<Tiempo>>
+    fun obtenerTiempoPorId(@Query("id") id: Int): Call<List<Tiempo>>
 }
